@@ -7,6 +7,10 @@ import javax.swing.event.ListSelectionListener
 import javax.swing.table.AbstractTableModel
 import kotlin.system.exitProcess
 
+fun ShowInputErrorBox() {
+    JOptionPane.showMessageDialog(null, "Nezināmas izcelsmes ievades kļūda", "Kļūda!", JOptionPane.ERROR_MESSAGE)
+
+}
 
 class AppFrame : JFrame() {
     val mainMenuBar: JMenuBar
@@ -25,6 +29,7 @@ class AppFrame : JFrame() {
 
         override fun getRowCount(): Int {
             //return rowData.length
+            //println("Giving row count as " + Application.cell.entities.size)
             return Application.cell.entities.size
         }
 
@@ -33,14 +38,20 @@ class AppFrame : JFrame() {
             return 5
         }
 
-        override fun getValueAt(row: Int, col: Int): Any {
+        override fun getValueAt(row: Int, col: Int): Any? {
             //return rowData.get(row).get(col)
-            when (col) {
-                0 -> return Application.cell.entities[row].type
-                1 -> return Application.cell.entities[row].name
-                2 -> return Application.cell.entities[row].location
-                3 -> return Application.cell.entities[row].rotation
-                4 -> return Application.cell.entities[row].action
+
+            // TODO: aizstāt izņēmuma pārbaudīšanu ar kādu citu veidu kā pārbaudīt vai indekss atroda sarakstā
+            try {
+                when (col) {
+                    0 -> return Application.cell.entities[row].type
+                    1 -> return Application.cell.entities[row].name
+                    2 -> return Application.cell.entities[row].location
+                    3 -> return Application.cell.entities[row].rotation
+                    4 -> return Application.cell.entities[row].action
+                }
+            } catch (e: Exception) {
+                return null
             }
             return 420
         }
@@ -52,11 +63,97 @@ class AppFrame : JFrame() {
         override fun setValueAt(value: Any, row: Int, col: Int) {
             //rowData.get(row).get(col) = value
             when (col) {
-                0 -> Application.cell.entities[row] = Application.cell.entities[row].convertTo(value as EntityType)
-                1 -> Application.cell.entities[row].name = value as String
-                2 -> try { Application.cell.entities[row].location = Vec3.fromString(value as String) } catch (e: Exception) {JOptionPane.showMessageDialog(null, "Nezināmas izcelsmes ievades kļūda", "Kļūda", JOptionPane.ERROR_MESSAGE)}
-                3 -> try { Application.cell.entities[row].rotation = Vec3.fromString(value as String) } catch (e: Exception) {JOptionPane.showMessageDialog(null, "Nezināmas izcelsmes ievades kļūda", "Kļūda", JOptionPane.ERROR_MESSAGE)}
+                0 -> { Application.cell.entities[row] = Application.cell.entities[row].convertTo(value as EntityType); cellTableModel.fireTableDataChanged() }
+                1 -> try { Application.cell.entities[row].name = value as String } catch (e: Exception) { ShowInputErrorBox() }
+                2 -> try { Application.cell.entities[row].location = Vec3.fromString(value as String) } catch (e: Exception) { ShowInputErrorBox() }
+                3 -> try { Application.cell.entities[row].rotation = Vec3.fromString(value as String) } catch (e: Exception) { ShowInputErrorBox() }
                 4 -> Application.cell.entities[row].action = value as String
+            }
+            fireTableCellUpdated(row, col)
+        }
+    }
+
+    object materialTableModel : AbstractTableModel() {
+        override fun getColumnName(col: Int): String {
+            when (col){
+                0 -> return "Nosaukums"
+                1 -> return "Materiāla veids"
+                else -> { return "???" }
+            }
+        }
+
+        override fun getRowCount(): Int {
+            return Application.materials.size
+        }
+
+        override fun getColumnCount(): Int {
+            return 2
+        }
+
+        override fun getValueAt(row: Int, col: Int): Any? {
+            // TODO: aizstāt izņēmuma pārbaudīšanu ar kādu citu veidu kā pārbaudīt vai indekss atroda sarakstā
+            try {
+                when (col) {
+                    0 -> return Application.materials[row].name
+                    1 -> return Application.materials[row].type
+                }
+            } catch (e: Exception) {
+                return null
+            }
+            return 420
+        }
+
+        override fun isCellEditable(row: Int, col: Int): Boolean {
+            return true
+        }
+
+        override fun setValueAt(value: Any, row: Int, col: Int) {
+            when (col) {
+                0 -> try { Application.materials[row].name = value as String } catch (e: Exception) { ShowInputErrorBox() }
+                1 -> Application.materials[row].type = value as MaterialType
+            }
+            fireTableCellUpdated(row, col)
+        }
+    }
+
+    object languageTableModel : AbstractTableModel() {
+        override fun getColumnName(col: Int): String {
+            when (col){
+                0 -> return "Nosaukums"
+                1 -> return "Simbolu virkne"
+                else -> { return "???" }
+            }
+        }
+
+        override fun getRowCount(): Int {
+            return Application.language.strings.size
+        }
+
+        override fun getColumnCount(): Int {
+            return 2
+        }
+
+        override fun getValueAt(row: Int, col: Int): Any? {
+            // TODO: aizstāt izņēmuma pārbaudīšanu ar kādu citu veidu kā pārbaudīt vai indekss atroda sarakstā
+            try {
+                when (col) {
+                    0 -> return Application.language.strings[row].name
+                    1 -> return Application.language.strings[row].string
+                }
+            } catch (e: Exception) {
+                return null
+            }
+            return 420
+        }
+
+        override fun isCellEditable(row: Int, col: Int): Boolean {
+            return true
+        }
+
+        override fun setValueAt(value: Any, row: Int, col: Int) {
+            when (col) {
+                0 -> try { Application.language.strings[row].name = value as String } catch (e: Exception) { ShowInputErrorBox() }
+                1 -> Application.language.strings[row].string = value as String
             }
             fireTableCellUpdated(row, col)
         }
@@ -92,24 +189,41 @@ class AppFrame : JFrame() {
         fileMenuQuit.addActionListener { exitProcess(0) }
         fileMenu.add(fileMenuQuit)
 
+        // rediģēšanas izvēlne
+
+        val editMenu: JMenu = JMenu("Rediģēt")
+
+        val editMenuNew: JMenuItem = JMenuItem("Jauns")
+        editMenuNew.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK)
+        editMenuNew.toolTipText = "Pievieno jaunu ierastu"
+        editMenu.add(editMenuNew)
+
+        val editMenuRemove: JMenuItem = JMenuItem("Noņemt")
+        editMenuRemove.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK)
+        editMenuRemove.toolTipText = "Noņem izvēlēto ierakstu"
+        editMenu.add(editMenuRemove)
+
         // pabeigt augšā celiņu
         mainMenuBar.add(fileMenu)
+        mainMenuBar.add(editMenu)
+
         jMenuBar = mainMenuBar
 
         // paneļi
 
         val mainPane = JTabbedPane()
 
-
         // šūnu panelis
         val cellTableColumnNames = arrayOf("benis", "benis", "benis!")
         val cellPanel: JPanel = JPanel(false)
         val cellTable: JTable = JTable(cellTableModel)
+
         val cellTableEntityTypeComboBox: JComboBox<EntityType> = JComboBox()
         cellTableEntityTypeComboBox.addItem(EntityType.DEFAULT)
         cellTableEntityTypeComboBox.addItem(EntityType.STATICWOBJ)
         cellTableEntityTypeComboBox.addItem(EntityType.CRATE)
         cellTable.columnModel.getColumn(0).cellEditor = DefaultCellEditor(cellTableEntityTypeComboBox)
+
         val cellScrollPane: JScrollPane = JScrollPane(cellTable)
         //val cellPropertyScrollPane: JScrollPane = JScrollPane(cellTable)
         //val cellSplit: JSplitPane = JSplitPane(JSplitPane.HORIZONTAL_SPLIT, cellScrollPane, cellPropertyScrollPane)
@@ -124,32 +238,84 @@ class AppFrame : JFrame() {
         cellPanel.layout = BorderLayout()
         cellPanel.add(cellSplit, BorderLayout.CENTER)
 
-        cellTable.getSelectionModel().addListSelectionListener(ListSelectionListener { // do some actions here, for example
+        cellTable.getSelectionModel().addListSelectionListener(ListSelectionListener {
             // print first column value from selected row
             if (!it.valueIsAdjusting) {
-                println(cellTable.getValueAt(cellTable.getSelectedRow(), 0).toString())
-                //println(cellTable.selectedRow)
-                cellSplit.leftComponent = CellEntityPropertiesPane(Application.cell.entities[cellTable.selectedRow])
-                cellSplit.dividerLocation = 200
+                if (cellTable.getSelectedRow() >= 0) {
+                    println(cellTable.getValueAt(cellTable.getSelectedRow(), 0).toString())
+                    //println(cellTable.selectedRow)
+                    cellSplit.leftComponent = CellEntityPropertiesPane(Application.cell.entities[cellTable.selectedRow])
+                    cellSplit.dividerLocation = 200
+                } else {
+                    cellSplit.leftComponent = JPanel()
+                    cellSplit.dividerLocation = 200
+                }
             }
         })
 
-        mainPane.addTab("Šūnas", null, cellPanel, "Dzimumlocekļa palielināšana")
+        mainPane.addTab("Šūnas", null, cellPanel, "Pasaules šūnu rediģēšana")
 
+
+        // materiāļu panelis
         val materialPanel: JPanel = JPanel(false)
-        mainPane.addTab("Materiāli", null, materialPanel, "Dzimumlocekļa palielināšana")
+        materialPanel.layout = BorderLayout()
 
+        val materialTable: JTable = JTable(materialTableModel)
+        materialTable.fillsViewportHeight = true
+
+        val materialScrollPane: JScrollPane = JScrollPane(materialTable)
+        materialPanel.add(materialScrollPane)
+
+        val materialTableMaterialTypeComboBox: JComboBox<MaterialType> = JComboBox()
+        materialTableMaterialTypeComboBox.addItem(MaterialType.FLAT)
+        materialTableMaterialTypeComboBox.addItem(MaterialType.ALPHA)
+        materialTableMaterialTypeComboBox.addItem(MaterialType.WATER)
+        materialTable.columnModel.getColumn(1).cellEditor = DefaultCellEditor(materialTableMaterialTypeComboBox)
+
+        mainPane.addTab("Materiāli", null, materialPanel, "Materiālu īpašību rediģēšana")
+
+        // valodas panelis
         val languagePanel: JPanel = JPanel(false)
-        mainPane.addTab("Valoda", null, languagePanel, "Dzimumlocekļa palielināšana")
+        languagePanel.layout = BorderLayout()
+
+        val languageTable: JTable = JTable(languageTableModel)
+        languageTable.fillsViewportHeight = true
+        languageTable.columnModel.getColumn(0).preferredWidth = 150
+        languageTable.columnModel.getColumn(1).preferredWidth = 650
+
+        val languageScrollPane: JScrollPane = JScrollPane(languageTable)
+        languagePanel.add(languageScrollPane)
+
+        mainPane.addTab("Valoda", null, languagePanel, "Valodas simbolu virkņu rediģēšana")
 
         val importantPanel: JPanel = JPanel(false)
         mainPane.addTab("Svarīgi", null, importantPanel, "Dzimumlocekļa palielināšana")
 
+        mainPane.addChangeListener {
+            //println(mainPane.selectedIndex)
+        }
         // pirmais panelis
 
         add(mainPane)
 
-        //pack()
+        // rediģēšanas izvēlnes darbības
+        editMenuNew.addActionListener {
+            when (mainPane.selectedIndex) {
+                0 -> {
+                    Application.cell.addBlankEntity()
+                    cellTableModel.fireTableDataChanged()
+                }
+            }
+        }
+
+        editMenuRemove.addActionListener {
+            when (mainPane.selectedIndex) {
+                0 -> {
+                    Application.cell.removeEntity(cellTable.selectedRow)
+                    cellTableModel.fireTableDataChanged()
+                }
+            }
+        }
     }
 
 

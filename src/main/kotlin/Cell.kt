@@ -28,9 +28,16 @@ enum class EntityType {
 abstract class Entity(/*type: EntityType, */name: String, location: Vec3, rotation: Vec3, action: String) {
     abstract val type: EntityType
     var name: String = name
+        set(value) {
+            val format = Regex("""[A-Za-z\-]+""")
+            if (!format.matches(value)) throw Exception("AMOGUS")
+            field = value
+        }
+
     var location: Vec3 = location
     var rotation: Vec3 = rotation
     var action: String = action
+
     fun convertTo(typeToConvert: EntityType): Entity {
         when (typeToConvert){
             EntityType.DEFAULT -> return this
@@ -54,6 +61,14 @@ class Crate(name: String, location: Vec3, rotation: Vec3, action: String, model:
 }
 
 class Cell(name: String) {
+    fun addBlankEntity() {
+        entities.add(Staticwobj("none", Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), "none", "none", "none", "fullbright"))
+    }
+
+    fun removeEntity(entityIndex: Int) {
+        entities.removeAt(entityIndex)
+    }
+
     val name: String = name
     val entities = mutableListOf<Entity>()
 }

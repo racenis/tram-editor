@@ -1,4 +1,4 @@
-data class LanguageString (val name: String, val string: String)
+data class LanguageString (var name: String, var string: String)
 
 class Language(name: String) {
     val name: String = name

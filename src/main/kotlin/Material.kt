@@ -4,4 +4,4 @@ enum class MaterialType {
     WATER
 }
 
-data class Material (val name: String, val type: MaterialType)
+data class Material (var name: String, var type: MaterialType)
