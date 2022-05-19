@@ -31,9 +31,11 @@ fun CellEntityPropertiesPane(obj: Entity): JScrollPane {
 
             collisionmodelField.text = obj.collisionmodel
             collisionmodelField.maximumSize = Dimension(Int.MAX_VALUE, collisionmodelField.preferredSize.height)
+            collisionmodelField.document.addDocumentListener(TextFieldChangeListener { obj.collisionmodel = collisionmodelField.text })
 
             lightmapField.text = obj.lightmap
             lightmapField.maximumSize = Dimension(Int.MAX_VALUE, collisionmodelField.preferredSize.height)
+            lightmapField.document.addDocumentListener(TextFieldChangeListener { obj.lightmap = lightmapField.text })
 
             modelFieldLabel.labelFor = modelField
             collisionmodelFieldLabel.labelFor = collisionmodelField
@@ -52,8 +54,13 @@ fun CellEntityPropertiesPane(obj: Entity): JScrollPane {
             val modelFieldLabel = JLabel("Modelis")
             val collisionmodelFieldLabel = JLabel("Fizikas modelis")
 
+            modelField.text = obj.model
             modelField.maximumSize = Dimension(Int.MAX_VALUE, modelField.preferredSize.height)
+            modelField.document.addDocumentListener(TextFieldChangeListener { obj.model = modelField.text })
+
+            collisionmodelField.text = obj.collisionmodel
             collisionmodelField.maximumSize = Dimension(Int.MAX_VALUE, collisionmodelField.preferredSize.height)
+            collisionmodelField.document.addDocumentListener(TextFieldChangeListener { obj.collisionmodel = collisionmodelField.text })
 
             modelFieldLabel.labelFor = modelField
             collisionmodelFieldLabel.labelFor = collisionmodelField

@@ -51,6 +51,13 @@ class AppFrame : JFrame() {
 
         override fun setValueAt(value: Any, row: Int, col: Int) {
             //rowData.get(row).get(col) = value
+            when (col) {
+                0 -> Application.cell.entities[row] = Application.cell.entities[row].convertTo(value as EntityType)
+                1 -> Application.cell.entities[row].name = value as String
+                2 -> try { Application.cell.entities[row].location = Vec3.fromString(value as String) } catch (e: Exception) {JOptionPane.showMessageDialog(null, "Nezināmas izcelsmes ievades kļūda", "Kļūda", JOptionPane.ERROR_MESSAGE)}
+                3 -> try { Application.cell.entities[row].rotation = Vec3.fromString(value as String) } catch (e: Exception) {JOptionPane.showMessageDialog(null, "Nezināmas izcelsmes ievades kļūda", "Kļūda", JOptionPane.ERROR_MESSAGE)}
+                4 -> Application.cell.entities[row].action = value as String
+            }
             fireTableCellUpdated(row, col)
         }
     }
@@ -162,7 +169,5 @@ fun main(args: Array<String>) {
 
     AppMakeData()
 
-    SwingUtilities.invokeLater {
-        val framerino = AppFrame()
-    }
+    SwingUtilities.invokeLater { val framerino = AppFrame() }
 }
