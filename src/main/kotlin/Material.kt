@@ -53,7 +53,7 @@ class MaterialList (name: String) {
     }
 
     fun WriteToDisk() {
-        val file = File("data/" + name + "bongo.list", )
+        val file = File("data/" + name + ".list", )
         var fileContent = ""
         materials.forEach { fileContent += it.name + " " + MaterialType.toFileString(it.type) + "\n" }
         file.writeText(fileContent, charset("windows-1257"))

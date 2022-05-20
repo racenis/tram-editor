@@ -77,7 +77,7 @@ class AppFrame : JFrame() {
 
     object materialTableModel : AbstractTableModel() {
         override fun getColumnName(col: Int): String {
-            when (col){
+            when (col) {
                 0 -> return "Nosaukums"
                 1 -> return "Materiāla veids"
                 else -> { return "???" }

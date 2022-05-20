@@ -10,13 +10,13 @@ object Application {
     }
 
     fun Init () {
-        return
+        cell.LoadFromDisk()
         language.LoadFromDisk()
         materials.LoadFromDisk()
     }
 
     fun Save() {
-        return
+        cell.WriteToDisk()
         language.WriteToDisk()
         materials.WriteToDisk()
     }
