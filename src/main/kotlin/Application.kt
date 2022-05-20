@@ -4,6 +4,10 @@ object Application {
     val models = mutableListOf<Model>()
     val cell = Cell("demo5")
     val language = Language("lv")
+
+    object Utils {
+        val nameFormat = Regex("""[A-Za-z0-9/\-]+""")
+    }
 }
 
 fun AppMakeData(){

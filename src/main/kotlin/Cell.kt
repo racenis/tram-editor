@@ -29,8 +29,7 @@ abstract class Entity(/*type: EntityType, */name: String, location: Vec3, rotati
     abstract val type: EntityType
     var name: String = name
         set(value) {
-            val format = Regex("""[A-Za-z\-]+""")
-            if (!format.matches(value)) throw Exception("AMOGUS")
+            if (!Application.Utils.nameFormat.matches(value)) throw Exception("AMOGUS")
             field = value
         }
 

@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent
 import java.awt.event.KeyEvent
 import javax.swing.*
 import javax.swing.event.ListSelectionListener
+import javax.swing.event.MenuEvent
+import javax.swing.event.MenuListener
 import javax.swing.table.AbstractTableModel
 import kotlin.system.exitProcess
 
@@ -161,7 +163,7 @@ class AppFrame : JFrame() {
 
     init {
         // uztaisīt lielo logu programmas logu, kurā notiks visas darbības
-        title = "Jānis Lielais Dambergs!"
+        title = "Tramvaju rediģējamā programma"
         setSize(800, 600)
         setLocationRelativeTo(null)
         defaultCloseOperation = JFrame.EXIT_ON_CLOSE
@@ -203,9 +205,31 @@ class AppFrame : JFrame() {
         editMenuRemove.toolTipText = "Noņem izvēlēto ierakstu"
         editMenu.add(editMenuRemove)
 
+        // toletes izvēlne
+
+        val toiletMenu: JMenu = JMenu()
+        val toiletIconSpin = ImageIcon(javaClass.getResource("/tolet20x20.gif"))
+        val toiletIconStop = ImageIcon(javaClass.getResource("/toletstop20x20.gif"))
+        toiletMenu.icon = toiletIconStop
+
+        val toiletMenuPause: JMenuItem = JMenuItem("Iegriezt")
+        toiletMenuPause.addActionListener(){
+            if (toiletMenu.icon == toiletIconStop) {
+                toiletMenu.icon = toiletIconSpin
+                toiletMenuPause.text = "Apstādināt"
+            } else {
+                toiletMenu.icon = toiletIconStop
+                toiletMenuPause.text = "Iegriezt"
+            }
+        }
+        toiletMenu.add(toiletMenuPause)
+
+
         // pabeigt augšā celiņu
         mainMenuBar.add(fileMenu)
         mainMenuBar.add(editMenu)
+        mainMenuBar.add(Box.createHorizontalGlue())
+        mainMenuBar.add(toiletMenu)
 
         jMenuBar = mainMenuBar
 
@@ -305,6 +329,14 @@ class AppFrame : JFrame() {
                     Application.cell.addBlankEntity()
                     cellTableModel.fireTableDataChanged()
                 }
+                1 -> {
+                    Application.materials.add(Material("", MaterialType.FLAT))
+                    materialTableModel.fireTableDataChanged()
+                }
+                2 -> {
+                    Application.language.strings.add(LanguageString("", ""))
+                    languageTableModel.fireTableDataChanged()
+                }
             }
         }
 
@@ -313,6 +345,14 @@ class AppFrame : JFrame() {
                 0 -> {
                     Application.cell.removeEntity(cellTable.selectedRow)
                     cellTableModel.fireTableDataChanged()
+                }
+                1 -> {
+                    Application.materials.removeAt(materialTable.selectedRow)
+                    materialTableModel.fireTableDataChanged()
+                }
+                2 -> {
+                    Application.language.strings.removeAt(materialTable.selectedRow)
+                    languageTableModel.fireTableDataChanged()
                 }
             }
         }
