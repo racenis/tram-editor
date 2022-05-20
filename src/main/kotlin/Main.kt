@@ -128,7 +128,7 @@ class AppFrame : JFrame() {
         }
 
         override fun getRowCount(): Int {
-            return Application.language.strings.size
+            return Application.language.size
         }
 
         override fun getColumnCount(): Int {
@@ -139,8 +139,8 @@ class AppFrame : JFrame() {
             // TODO: aizstāt izņēmuma pārbaudīšanu ar kādu citu veidu kā pārbaudīt vai indekss atroda sarakstā
             try {
                 when (col) {
-                    0 -> return Application.language.strings[row].name
-                    1 -> return Application.language.strings[row].string
+                    0 -> return Application.language[row].name
+                    1 -> return Application.language[row].string
                 }
             } catch (e: Exception) {
                 return null
@@ -154,8 +154,8 @@ class AppFrame : JFrame() {
 
         override fun setValueAt(value: Any, row: Int, col: Int) {
             when (col) {
-                0 -> try { Application.language.strings[row].name = value as String } catch (e: Exception) { ShowInputErrorBox() }
-                1 -> Application.language.strings[row].string = value as String
+                0 -> try { Application.language[row].name = value as String } catch (e: Exception) { ShowInputErrorBox() }
+                1 -> Application.language[row].string = value as String
             }
             fireTableCellUpdated(row, col)
         }
@@ -178,7 +178,7 @@ class AppFrame : JFrame() {
 
         val fileMenuSave: JMenuItem = JMenuItem("Saglabāt")
         fileMenuSave.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK)
-        fileMenuSave.addActionListener { Benigonis() }
+        fileMenuSave.addActionListener { Application.Save() }
         fileMenu.add(fileMenuSave)
 
         val fileMenuError: JMenuItem = JMenuItem("Uztaisīt atteici")
@@ -294,6 +294,7 @@ class AppFrame : JFrame() {
         materialTableMaterialTypeComboBox.addItem(MaterialType.FLAT)
         materialTableMaterialTypeComboBox.addItem(MaterialType.ALPHA)
         materialTableMaterialTypeComboBox.addItem(MaterialType.WATER)
+        materialTableMaterialTypeComboBox.addItem(MaterialType.LIGHTMAP)
         materialTable.columnModel.getColumn(1).cellEditor = DefaultCellEditor(materialTableMaterialTypeComboBox)
 
         mainPane.addTab("Materiāli", null, materialPanel, "Materiālu īpašību rediģēšana")
@@ -330,11 +331,11 @@ class AppFrame : JFrame() {
                     cellTableModel.fireTableDataChanged()
                 }
                 1 -> {
-                    Application.materials.add(Material("", MaterialType.FLAT))
+                    Application.materials.addBlankMaterial()
                     materialTableModel.fireTableDataChanged()
                 }
                 2 -> {
-                    Application.language.strings.add(LanguageString("", ""))
+                    Application.language.addBlankString()
                     languageTableModel.fireTableDataChanged()
                 }
             }
@@ -347,11 +348,11 @@ class AppFrame : JFrame() {
                     cellTableModel.fireTableDataChanged()
                 }
                 1 -> {
-                    Application.materials.removeAt(materialTable.selectedRow)
+                    Application.materials.removeMaterial(materialTable.selectedRow)
                     materialTableModel.fireTableDataChanged()
                 }
                 2 -> {
-                    Application.language.strings.removeAt(materialTable.selectedRow)
+                    Application.language.removeString(languageTable.selectedRow)
                     languageTableModel.fireTableDataChanged()
                 }
             }
@@ -374,6 +375,8 @@ fun main(args: Array<String>) {
     println("Program arguments: ${args.joinToString()}")
 
     AppMakeData()
+
+    Application.Init()
 
     SwingUtilities.invokeLater { val framerino = AppFrame() }
 }

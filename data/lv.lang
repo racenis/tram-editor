@@ -1,0 +1,67 @@
+tram-s TRAMVAJA
+bus-s AUTOBUSA
+type TIPS:
+tatra TATRA T3DRIFT
+raf RAF 2203
+draw-path-debug Râdît sliedes
+draw-physics-debug Râdît fizikas simulâcijas
+show-times Râdît laikus
+tramway1 TRAMVAJU
+tramway2 Drifta un Pagrabu Pçtîðanas Simulators 2022 v0.43
+milk-s PIENA
+milk-ammount DAUDZUMS:
+ok OK
+accept AKCEPT
+decline NÇPALDIES
+floppa-ask-check Manâ pagrabâ? Troksnis.
+floppa-checked Kas bija pagrabâ?
+floppa-answ1 Tur? Nekâ nebija.
+floppa-answ2 Tev pagrabâ mongus.
+floppa-resp1 Manâ pagrabâ %bIR!!!
+floppa-resp2 Pagrabâ.. mongus..
+instr1 %bPAGAIDI LAI ZEME IELÂDÇJÂS PIRMS KUSTÇÐANÂS
+instr2 [ESC] Atvçrt galveno izvçlni / atgriezties spçlç
+instr3 [WASD] Kustîbas
+instr4 [SPACE] Lçkðana
+instr5 [LCTRL + SPACE] Lçkðana uz priekðu 
+instr6 [E] Aktivizçt 
+instr7 [~] Konsole
+instr8 [F1] Abortçt
+instr9 [F5] Treðâ persona
+instr10 [F9] Brîvâ lidoðana
+bingus-hello Kas augðâ, mâjniek?
+bingus-q-whatup Ko notiek?
+bingus-a-whatup Ðe, piecîtis, atnes pienu. No piena veikala. Piena veikalâ ir piens.
+bingus-q-wherepee Kur var paèurât?
+bingus-a-wherepee vnks ieej ezerâ un paèurâ :DD lol
+bingus-q-pook Hmm.. ok.
+bingus-a-pook Vçl jautâjumi?
+bingus-q-kbye Atâ
+bingus-q-heremilk Svaigs piens no piena veikala [atdot pienu]
+bingus-a-heremilk Mmmm... piens ....
+floppa-hello Jâ?
+floppa-q-kbye Atâ.
+floppa-q-whatup Ko notiek?
+floppa-a-whatup Es tikko tramvajam baterijas uzlâdçju. Negribi izmest loku pa centrifugâlo atpienojamo mezglu?
+floppa-q-whatis 0_O Kas ir centrifugâlais mezgls?
+floppa-a-whatis Â nu tu ieliec govi tramvajâ un driftç ar viòu uz riòíi. Nu tâ. Priekð piena kokteiïiem.
+floppa-q-oke Labi. es  .. "izmetîðu" apli
+floppa-a-oke Novçlu veiksmi .. haha .. >:)
+floppa-q-didit Es izmetu. Apli.
+floppa-a-didit WOW.. es tieðâm nedomâju ka tu izdzîvosi ..   . . .. . kâ bija?
+floppa-q-wasoke Bija ok..
+floppa-a-wasoke Vecît...
+floppa-q-wasnotoke Briesmîgi, es izkritu cauri pasaulei!
+floppa-a-wasnotoke Izklausâs sâpîgi...
+floppa-q-wasmeh Eh..
+floppa-a-wasmeh Eh........
+floppa-q-wherepee Kur var paèurât?
+floppa-a-wherepee Uhh.. paprasi bingum.. es parasti èurâju izlietnç... piedod, bet es tev nevaru ïaut izmantot savçjo izlietni..
+bingus-q-givemore Ir vçl kaut kas izdarâms?
+bingus-a-givemore Paprasi flopai..
+bingus-q-donedone Es izdarîju to ko flopa gribçja.
+bingus-a-donedone Aij es nez, moð pasauc mongusu mâjâs .. viòð gan jau atkal ir puïíu fabrikâ
+startgame-text LOBÇÐANAS REÞÎMS
+startgame-button SÂCÇT SPÇLI
+putting-text LIKÐANAS REÞÎMS
+putting-button NOLIKT  KLUCI
