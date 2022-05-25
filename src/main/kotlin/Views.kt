@@ -18,24 +18,27 @@ fun CellEntityPropertiesPane(obj: Entity): JScrollPane {
 
     when (obj) {
         is Staticwobj -> {
-            val modelField = JTextField(15)
-            val collisionmodelField = JTextField(15)
-            val lightmapField = JTextField(15)
+            val modelField = JComboBox(Application.resources.getResourceNameList { res -> res == ResourceType.STATIC_MODEL || res == ResourceType.DYNAMIC_MODEL })
+            val collisionmodelField = JComboBox(Application.resources.getResourceNameList { res -> res == ResourceType.COLLISION_MODEL })
+            val lightmapField = JComboBox(Application.resources.getResourceNameList { res -> res == ResourceType.LIGHTMAP })
             val modelFieldLabel = JLabel("Modelis")
             val collisionmodelFieldLabel = JLabel("Fizikas modelis")
             val lightmapFieldLabel = JLabel("Gaismas tekstūra")
 
-            modelField.text = obj.model
+            modelField.isEditable = true
+            modelField.selectedItem = obj.model
             modelField.maximumSize = Dimension(Int.MAX_VALUE, modelField.preferredSize.height)
-            modelField.document.addDocumentListener(TextFieldChangeListener { obj.model = modelField.text })
+            modelField.addActionListener { obj.model = modelField.selectedItem as String }
 
-            collisionmodelField.text = obj.collisionmodel
+            collisionmodelField.isEditable = true
+            collisionmodelField.selectedItem = obj.collisionmodel
             collisionmodelField.maximumSize = Dimension(Int.MAX_VALUE, collisionmodelField.preferredSize.height)
-            collisionmodelField.document.addDocumentListener(TextFieldChangeListener { obj.collisionmodel = collisionmodelField.text })
+            collisionmodelField.addActionListener { obj.collisionmodel = collisionmodelField.selectedItem as String }
 
-            lightmapField.text = obj.lightmap
+            lightmapField.isEditable = true
+            lightmapField.selectedItem = obj.lightmap
             lightmapField.maximumSize = Dimension(Int.MAX_VALUE, collisionmodelField.preferredSize.height)
-            lightmapField.document.addDocumentListener(TextFieldChangeListener { obj.lightmap = lightmapField.text })
+            lightmapField.addActionListener {obj.lightmap = lightmapField.selectedItem as String}
 
             modelFieldLabel.labelFor = modelField
             collisionmodelFieldLabel.labelFor = collisionmodelField
@@ -49,18 +52,20 @@ fun CellEntityPropertiesPane(obj: Entity): JScrollPane {
             panel.add(lightmapField)
         }
         is Crate -> {
-            val modelField = JTextField(15)
-            val collisionmodelField = JTextField(15)
+            val modelField = JComboBox(Application.resources.getResourceNameList { res -> res == ResourceType.STATIC_MODEL || res == ResourceType.DYNAMIC_MODEL })
+            val collisionmodelField = JComboBox(Application.resources.getResourceNameList { res -> res == ResourceType.COLLISION_MODEL })
             val modelFieldLabel = JLabel("Modelis")
             val collisionmodelFieldLabel = JLabel("Fizikas modelis")
 
-            modelField.text = obj.model
+            modelField.isEditable = true
+            modelField.selectedItem = obj.model
             modelField.maximumSize = Dimension(Int.MAX_VALUE, modelField.preferredSize.height)
-            modelField.document.addDocumentListener(TextFieldChangeListener { obj.model = modelField.text })
+            modelField.addActionListener { obj.model = modelField.selectedItem as String }
 
-            collisionmodelField.text = obj.collisionmodel
+            collisionmodelField.isEditable = true
+            collisionmodelField.selectedItem = obj.collisionmodel
             collisionmodelField.maximumSize = Dimension(Int.MAX_VALUE, collisionmodelField.preferredSize.height)
-            collisionmodelField.document.addDocumentListener(TextFieldChangeListener { obj.collisionmodel = collisionmodelField.text })
+            collisionmodelField.addActionListener { obj.collisionmodel = collisionmodelField.selectedItem as String }
 
             modelFieldLabel.labelFor = modelField
             collisionmodelFieldLabel.labelFor = collisionmodelField

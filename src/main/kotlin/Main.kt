@@ -285,16 +285,19 @@ class AppFrame : JFrame() {
         materialPanel.layout = BorderLayout()
 
         val materialTable: JTable = JTable(materialTableModel)
+        materialTable.autoCreateRowSorter = true
         materialTable.fillsViewportHeight = true
 
         val materialScrollPane: JScrollPane = JScrollPane(materialTable)
         materialPanel.add(materialScrollPane)
 
         val materialTableMaterialTypeComboBox: JComboBox<MaterialType> = JComboBox()
-        materialTableMaterialTypeComboBox.addItem(MaterialType.FLAT)
+        // TODO: uztaisīt lai nav šitā, bet automātiski
+        MaterialType.values().forEach { materialTableMaterialTypeComboBox.addItem(it) }
+        /*materialTableMaterialTypeComboBox.addItem(MaterialType.FLAT)
         materialTableMaterialTypeComboBox.addItem(MaterialType.ALPHA)
         materialTableMaterialTypeComboBox.addItem(MaterialType.WATER)
-        materialTableMaterialTypeComboBox.addItem(MaterialType.LIGHTMAP)
+        materialTableMaterialTypeComboBox.addItem(MaterialType.LIGHTMAP)*/
         materialTable.columnModel.getColumn(1).cellEditor = DefaultCellEditor(materialTableMaterialTypeComboBox)
 
         mainPane.addTab("Materiāli", null, materialPanel, "Materiālu īpašību rediģēšana")
@@ -304,6 +307,7 @@ class AppFrame : JFrame() {
         languagePanel.layout = BorderLayout()
 
         val languageTable: JTable = JTable(languageTableModel)
+        languageTable.autoCreateRowSorter = true
         languageTable.fillsViewportHeight = true
         languageTable.columnModel.getColumn(0).preferredWidth = 150
         languageTable.columnModel.getColumn(1).preferredWidth = 650

@@ -1,7 +1,7 @@
 object Application {
     val name = "uwu ;33"
     val materials = MaterialList("texture")
-    val models = mutableListOf<Model>()
+    val resources = ResourceList()
     val cell = Cell("demo5")
     val language = Language("lv")
 
@@ -13,6 +13,7 @@ object Application {
         cell.LoadFromDisk()
         language.LoadFromDisk()
         materials.LoadFromDisk()
+        resources.LoadFromDisk()
     }
 
     fun Save() {
