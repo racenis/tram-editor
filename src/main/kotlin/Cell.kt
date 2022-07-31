@@ -5,7 +5,7 @@ data class Vec3(val x: Float, val y: Float, val z: Float) {
 
     companion object{
         fun fromString(str: String): Vec3 {
-            val format = Regex("""\(([0-9]+\.?[0-9]*), ([0-9]+\.?[0-9]*), ([0-9]+\.?[0-9]*)\)""")
+            val format = Regex("""\((-?[0-9]+\.?[0-9]*), (-?[0-9]+\.?[0-9]*), (-?[0-9]+\.?[0-9]*)\)""")
             // tas ir simbolu virkne formā '(0.0, 0.0, 0.0)', ar jebkādiem skaitļiem
 
             if (format matches str){
@@ -69,7 +69,7 @@ abstract class Entity(/*type: EntityType, */name: String, location: Vec3, rotati
     companion object {
         fun fromString (string: String) : Entity {
             val tokens = string.split(' ')
-            println(tokens)
+            //println(tokens)
 
             val name = tokens[1]
             val location = Vec3(tokens[2].toFloat(), tokens[3].toFloat(), tokens[4].toFloat())

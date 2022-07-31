@@ -174,7 +174,6 @@ class AppFrame : JFrame() {
 
         // fails izvēlne & apakšizvēlnes
         val fileMenu: JMenu = JMenu("Fails")
-        fileMenu.accessibleContext.accessibleDescription = "Dzimumlocekļa palielināšana"
 
         val fileMenuSave: JMenuItem = JMenuItem("Saglabāt")
         fileMenuSave.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK)
@@ -318,7 +317,7 @@ class AppFrame : JFrame() {
         mainPane.addTab("Valoda", null, languagePanel, "Valodas simbolu virkņu rediģēšana")
 
         val importantPanel: JPanel = JPanel(false)
-        mainPane.addTab("Svarīgi", null, importantPanel, "Dzimumlocekļa palielināšana")
+        mainPane.addTab("Svarīgi", null, importantPanel, "Toletes griešanās")
 
         mainPane.addChangeListener {
             //println(mainPane.selectedIndex)
@@ -372,15 +371,6 @@ class AppFrame : JFrame() {
     }
 
 fun main(args: Array<String>) {
-    println("Hello World!")
-
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
-
-    AppMakeData()
-
     Application.Init()
-
     SwingUtilities.invokeLater { val framerino = AppFrame() }
 }

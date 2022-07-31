@@ -47,7 +47,7 @@ class ResourceList {
 
         }
 
-        print(resources)
+        //print(resources)
 
     }
 }
